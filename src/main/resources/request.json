@@ -1,0 +1,49 @@
+{
+    "messages": [
+        {
+            "content": "What's the weather like in San Francisco, Tokyo, and Paris?",
+            "role": "user"
+        }
+    ],
+    "model": "gpt-4o-mini",
+    "stream": false,
+    "tools": [
+        {
+            "type": "function",
+            "function": {
+                "description": "Get the weather in location",
+                "name": "getCurrentWeather",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "The city and state e.g. San Francisco, CA"
+                        },
+                        "lat": {
+                            "type": "number",
+                            "description": "The city latitude"
+                        },
+                        "lon": {
+                            "type": "number",
+                            "description": "The city longitude"
+                        },
+                        "unit": {
+                            "type": "string",
+                            "enum": [
+                                "C",
+                                "F"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "location",
+                        "lat",
+                        "lon",
+                        "unit"
+                    ]
+                }
+            }
+        }
+    ]
+}
