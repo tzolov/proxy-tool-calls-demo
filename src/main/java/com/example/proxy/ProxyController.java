@@ -20,7 +20,6 @@ import java.util.Map;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.openai.OpeAiApiAdapter;
 import org.springframework.ai.openai.api.OpenAiApi.ChatCompletion;
 import org.springframework.ai.openai.api.OpenAiApi.ChatCompletionChunk;
 import org.springframework.ai.openai.api.OpenAiApi.ChatCompletionRequest;
@@ -54,11 +53,11 @@ public class ProxyController {
 	@PostMapping("/v1/chat/completions")
 	public ChatCompletion completion(@RequestBody ChatCompletionRequest completionRequest) {
 
-		Prompt prompt = OpeAiApiAdapter.toPrompt(completionRequest);
+		Prompt prompt = OpenAiApiAdapter.toPrompt(completionRequest);
 
 		ChatResponse chatResponse = chatClient.prompt(prompt).call().chatResponse();
 
-		ChatCompletion chatCompletion = OpeAiApiAdapter.toChatCompletion(chatResponse);
+		ChatCompletion chatCompletion = OpenAiApiAdapter.toChatCompletion(chatResponse);
 
 		return chatCompletion;
 	}
@@ -66,9 +65,9 @@ public class ProxyController {
 	@PostMapping(path = "/stream/v1/chat/completions", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<ChatCompletionChunk> streamCompletion(@RequestBody ChatCompletionRequest completionRequest) {
 
-		return chatClient.prompt(OpeAiApiAdapter.toPrompt(completionRequest))
+		return chatClient.prompt(OpenAiApiAdapter.toPrompt(completionRequest))
 			.stream()
 			.chatResponse()
-			.map(OpeAiApiAdapter::toChatCompletionChunk);
+			.map(OpenAiApiAdapter::toChatCompletionChunk);
 	}
 }
